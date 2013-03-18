@@ -1,5 +1,6 @@
 bin/
 .metadata
+.settings/
 *~
 
 # Generated Files
