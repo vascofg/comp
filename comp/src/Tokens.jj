@@ -7,7 +7,7 @@
 | < CLOSEPARENTHESIS : ")" >  | < MATCH : "{" < INTEGER > "," < INTEGER > "}" >
 | < MATCHNORMORE : "{" < INTEGER > ",""}" >
 | < MATCHN : "{" < INTEGER > "}" >
-| < NOSPECIAL : "\\" >
+| < BACKSLASH : "\\" >
 | < POSLOOKAHEAD : "?=" >
 | < NEGLOOKAHEAD : "?!" >
 | < POSLOOKBEHIND : "?<=" >
