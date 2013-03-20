@@ -19,8 +19,8 @@
 void EXP():{}
 {
 	AnyChar()[Multiplicity()][EXP()]
-| 	<OPENPARENTHESIS>EXP()<CLOSEPARENTHESIS>[Multiplicity()][EXP()] //Não aceita ()
-//Deve aceitar \ seguido de qualquer símbolo que tenha significado para regex (token)	}
+| 	<OPENPARENTHESIS>EXP()<CLOSEPARENTHESIS>[Multiplicity()][EXP()] //Nï¿½o aceita ()
+//Deve aceitar \ seguido de qualquer sï¿½mbolo que tenha significado para regex (token)	}
 
 void AnyChar():{}{
   < CHAR > | < ANY >
@@ -35,7 +35,4 @@ void Multiplicity() :
 {
 	(< OPENPARENTHESIS >((Expression())+< CLOSEPARENTHESIS >)(Multiplicity())?)
 }*/
-void run() :{}{  (    EXP()
-  )< LF >
-    Expression()
-  )+  < LF >}
+void run() :{}{    EXP()< LF >}
