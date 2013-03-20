@@ -2,9 +2,18 @@
  * JavaCC template file created by SF JavaCC plugin 1.5.17+ wizard for JavaCC 1.5.0+
  */options{  JDK_VERSION = "1.5";  static = true;}PARSER_BEGIN(EG1)public class EG1{  public static void main(String args []) throws ParseException  {    EG1 parser = new EG1(System.in);    System.out.println("Write a string...");    try    {      System.out.print("> ");      parser.run();      System.out.println("Accepted");    }    catch (Exception e)    {      System.out.println("Rejected");    }    catch (TokenMgrError e)    {      System.out.println("Rejected");    }  }}PARSER_END(EG1)SKIP :{  " "| " \t "| "\r"}TOKEN :{
     < CHAR : [ "A"-"Z", "a"-"z", "0"-"9"] >	//| <SYMBOL : ""> | 
-|  < WORD : "\\w" >| < NONWORD : "\\W" >| < WHITESPACE : "\\s" >| < NONWHITESPACE : "\\S" >| < DIGIT : "\\d" >| < NONDIGIT : "\\D" >| < ANY : "." >| < ZEROMORE : "*" >| < ONEMORE : "+" >| < ZEROONE : "?" >
+| < WORD : "\\w" >| < NONWORD : "\\W" >| < WHITESPACE : "\\s" >| < NONWHITESPACE : "\\S" >| < DIGIT : "\\d" >| < NONDIGIT : "\\D" >| < ANY : "." >| < ZEROMORE : "*" >| < ONEMORE : "+" >| < ZEROONE : "?" >
 | < OPENPARENTHESIS : "(" >
 | < CLOSEPARENTHESIS : ")" >  | < MATCH : "{" < INTEGER > "," < INTEGER > "}" >
+| < MATCHNORMORE : "{" < INTEGER > ",""}" >
+| < MATCHN : "{" < INTEGER > "}" >
+| < NOSPECIAL : "\\" >
+| < POSLOOKAHEAD : "?=" >
+| < NEGLOOKAHEAD : "?!" >
+| < POSLOOKBEHIND : "?<=" >
+| < NEGLOOKBEHIND : "?<!" >
+| < START : "^" >
+| < END : "$" >  
 	| < #INTEGER : ["1"-"9"] (["0"-"9"])* >| < LF : "\n" >}
 
 void EXP():{}
@@ -27,4 +36,6 @@ void Multiplicity() :
 	(< OPENPARENTHESIS >((Expression())+< CLOSEPARENTHESIS >)(Multiplicity())?)
 }*/
 void run() :{}{  (    EXP()
-  )< LF >}
+  )< LF >
+    Expression()
+  )+  < LF >}
