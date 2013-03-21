@@ -8,10 +8,10 @@ public class Regex2Auto/*@bgen(jjtree)*/implements Regex2AutoTreeConstants, Rege
     {
       System.out.print("> ");
       //parser.run();
-      SimpleNode n = parser.run();
+      SimpleNode n = parser.Start();
       n.dump("");
       //System.out.println("Accepted");
-        }
+    }
     catch (ParseException e)
     {
       System.out.println(e.getMessage());
@@ -31,7 +31,7 @@ public class Regex2Auto/*@bgen(jjtree)*/implements Regex2AutoTreeConstants, Rege
       switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
       case CHAR:
       case ANY:
-        AnyChar();
+        Char();
         switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
         case ZEROMORE:
         case ONEMORE:
@@ -84,56 +84,47 @@ public class Regex2Auto/*@bgen(jjtree)*/implements Regex2AutoTreeConstants, Rege
         throw new ParseException();
       }
     } catch (Throwable jjte000) {
-          if (jjtc000) {
-            jjtree.clearNodeScope(jjtn000);
-            jjtc000 = false;
-          } else {
-            jjtree.popNode();
-          }
-          if (jjte000 instanceof RuntimeException) {
-            {if (true) throw (RuntimeException)jjte000;}
-          }
-          if (jjte000 instanceof ParseException) {
-            {if (true) throw (ParseException)jjte000;}
-          }
-          {if (true) throw (Error)jjte000;}
+    if (jjtc000) {
+      jjtree.clearNodeScope(jjtn000);
+      jjtc000 = false;
+    } else {
+      jjtree.popNode();
+    }
+    if (jjte000 instanceof RuntimeException) {
+      {if (true) throw (RuntimeException)jjte000;}
+    }
+    if (jjte000 instanceof ParseException) {
+      {if (true) throw (ParseException)jjte000;}
+    }
+    {if (true) throw (Error)jjte000;}
     } finally {
-          if (jjtc000) {
-            jjtree.closeNodeScope(jjtn000, true);
-          }
+    if (jjtc000) {
+      jjtree.closeNodeScope(jjtn000, true);
+    }
     }
   }
 
-  static final public void AnyChar() throws ParseException {
- /*@bgen(jjtree) AnyChar */
- SimpleNode jjtn000 = new SimpleNode(JJTANYCHAR);
- boolean jjtc000 = true;
- jjtree.openNodeScope(jjtn000);Token t;
+  static final public void Char() throws ParseException {
+ /*@bgen(jjtree) Char */
+  SimpleNode jjtn000 = new SimpleNode(JJTCHAR);
+  boolean jjtc000 = true;
+  jjtree.openNodeScope(jjtn000);Token t;
     try {
       switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
       case CHAR:
-    SimpleNode jjtn001 = new SimpleNode(JJTCHARVAL);
-    boolean jjtc001 = true;
-    jjtree.openNodeScope(jjtn001);
-        try {
-          t = jj_consume_token(CHAR);
-        } finally {
-    if (jjtc001) {
-      jjtree.closeNodeScope(jjtn001, true);
-    }
-        }
-                        jjtree.closeNodeScope(jjtn000, true);
-                        jjtc000 = false;
-    jjtn000.val=t.image;
+        t = jj_consume_token(CHAR);
         break;
       case ANY:
-        jj_consume_token(ANY);
+        t = jj_consume_token(ANY);
         break;
       default:
         jj_la1[5] = jj_gen;
         jj_consume_token(-1);
         throw new ParseException();
       }
+    jjtree.closeNodeScope(jjtn000, true);
+    jjtc000 = false;
+    jjtn000.jjtSetValue(t.image);
     } finally {
     if (jjtc000) {
       jjtree.closeNodeScope(jjtn000, true);
@@ -145,50 +136,26 @@ public class Regex2Auto/*@bgen(jjtree)*/implements Regex2AutoTreeConstants, Rege
  /*@bgen(jjtree) Multiplicity */
   SimpleNode jjtn000 = new SimpleNode(JJTMULTIPLICITY);
   boolean jjtc000 = true;
-  jjtree.openNodeScope(jjtn000);
+  jjtree.openNodeScope(jjtn000);Token t;
     try {
       switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
       case ZEROMORE:
-    SimpleNode jjtn001 = new SimpleNode(JJTZEROMORE);
-    boolean jjtc001 = true;
-    jjtree.openNodeScope(jjtn001);
-        try {
-          jj_consume_token(ZEROMORE);
-        } finally {
-    if (jjtc001) {
-      jjtree.closeNodeScope(jjtn001, true);
-    }
-        }
+        t = jj_consume_token(ZEROMORE);
         break;
       case ONEMORE:
-     SimpleNode jjtn002 = new SimpleNode(JJTONEMORE);
-     boolean jjtc002 = true;
-     jjtree.openNodeScope(jjtn002);
-        try {
-          jj_consume_token(ONEMORE);
-        } finally {
-     if (jjtc002) {
-       jjtree.closeNodeScope(jjtn002, true);
-     }
-        }
+        t = jj_consume_token(ONEMORE);
         break;
       case ZEROONE:
-     SimpleNode jjtn003 = new SimpleNode(JJTZEROONE);
-     boolean jjtc003 = true;
-     jjtree.openNodeScope(jjtn003);
-        try {
-          jj_consume_token(ZEROONE);
-        } finally {
-     if (jjtc003) {
-       jjtree.closeNodeScope(jjtn003, true);
-     }
-        }
+        t = jj_consume_token(ZEROONE);
         break;
       default:
         jj_la1[6] = jj_gen;
         jj_consume_token(-1);
         throw new ParseException();
       }
+    jjtree.closeNodeScope(jjtn000, true);
+    jjtc000 = false;
+    jjtn000.jjtSetValue(t.image);
     } finally {
     if (jjtc000) {
       jjtree.closeNodeScope(jjtn000, true);
@@ -201,35 +168,35 @@ public class Regex2Auto/*@bgen(jjtree)*/implements Regex2AutoTreeConstants, Rege
 {
 	(< OPENPARENTHESIS >((Expression())+< CLOSEPARENTHESIS >)(Multiplicity())?)
 }*/
-  static final public SimpleNode run() throws ParseException {
- /*@bgen(jjtree) run */
-  SimpleNode jjtn000 = new SimpleNode(JJTRUN);
+  static final public SimpleNode Start() throws ParseException {
+ /*@bgen(jjtree) Start */
+  SimpleNode jjtn000 = new SimpleNode(JJTSTART);
   boolean jjtc000 = true;
   jjtree.openNodeScope(jjtn000);
     try {
       EXP();
       jj_consume_token(LF);
-          jjtree.closeNodeScope(jjtn000, true);
-          jjtc000 = false;
-        {if (true) return jjtn000;}
+    jjtree.closeNodeScope(jjtn000, true);
+    jjtc000 = false;
+    {if (true) return jjtn000;}
     } catch (Throwable jjte000) {
-          if (jjtc000) {
-            jjtree.clearNodeScope(jjtn000);
-            jjtc000 = false;
-          } else {
-            jjtree.popNode();
-          }
-          if (jjte000 instanceof RuntimeException) {
-            {if (true) throw (RuntimeException)jjte000;}
-          }
-          if (jjte000 instanceof ParseException) {
-            {if (true) throw (ParseException)jjte000;}
-          }
-          {if (true) throw (Error)jjte000;}
+    if (jjtc000) {
+      jjtree.clearNodeScope(jjtn000);
+      jjtc000 = false;
+    } else {
+      jjtree.popNode();
+    }
+    if (jjte000 instanceof RuntimeException) {
+      {if (true) throw (RuntimeException)jjte000;}
+    }
+    if (jjte000 instanceof ParseException) {
+      {if (true) throw (ParseException)jjte000;}
+    }
+    {if (true) throw (Error)jjte000;}
     } finally {
-          if (jjtc000) {
-            jjtree.closeNodeScope(jjtn000, true);
-          }
+    if (jjtc000) {
+      jjtree.closeNodeScope(jjtn000, true);
+    }
     }
     throw new Error("Missing return statement in function");
   }

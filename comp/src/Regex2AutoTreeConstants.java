@@ -2,24 +2,16 @@
 public interface Regex2AutoTreeConstants
 {
   public int JJTEXP = 0;
-  public int JJTANYCHAR = 1;
-  public int JJTCHARVAL = 2;
-  public int JJTMULTIPLICITY = 3;
-  public int JJTZEROMORE = 4;
-  public int JJTONEMORE = 5;
-  public int JJTZEROONE = 6;
-  public int JJTRUN = 7;
+  public int JJTCHAR = 1;
+  public int JJTMULTIPLICITY = 2;
+  public int JJTSTART = 3;
 
 
   public String[] jjtNodeName = {
     "EXP",
-    "AnyChar",
-    "charval",
+    "Char",
     "Multiplicity",
-    "zeromore",
-    "onemore",
-    "zeroone",
-    "run",
+    "Start",
   };
 }
-/* JavaCC - OriginalChecksum=11b49d2c8ee28af91f50fedce13c97f1 (do not edit this line) */
+/* JavaCC - OriginalChecksum=7061c03d6cc305fd1c3a9b546630bb33 (do not edit this line) */

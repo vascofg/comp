@@ -8,10 +8,7 @@ class SimpleNode implements Node {
   protected int id;
   protected Object value;
   protected Regex2Auto parser;
-  
-  //public String Op;
-  public String val;
-  
+
   public SimpleNode(int i) {
     id = i;
   }
@@ -68,19 +65,24 @@ class SimpleNode implements Node {
     /*if(this.val!=null)
     	System.out.println(prefix+this.val);
     else*/
-    switch(this.id)
+    /*switch(this.id)
     {
     case Regex2AutoTreeConstants.JJTZEROMORE:
-    	System.out.println(prefix+"*");break;
+    	System.out.println(prefix+jjtGetValue());break;
     case Regex2AutoTreeConstants.JJTONEMORE:
     	System.out.println(prefix+"+");break;
     case Regex2AutoTreeConstants.JJTZEROONE:
     	System.out.println(prefix+"?");break;
     case Regex2AutoTreeConstants.JJTCHARVAL:
-    	System.out.println(prefix+this.val);break;
+    	System.out.println(prefix+val);break;
     default:
     	System.out.println(toString(prefix));break;
-    }
+    }*/
+	System.out.print(toString(prefix));
+	if(this.jjtGetValue()!=null)
+		System.out.print(" "+this.jjtGetValue().toString());
+	System.out.println();
+	
     if (children != null) {
       for (int i = 0; i < children.length; ++i) {
         SimpleNode n = (SimpleNode)children[i];
