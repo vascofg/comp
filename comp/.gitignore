@@ -2,6 +2,3 @@ bin/
 .metadata
 .settings/
 *~
-
-# Generated Files
-*.java
