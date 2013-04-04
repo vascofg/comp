@@ -55,7 +55,12 @@ class SimpleNode implements Node {
      toString(String), otherwise overriding toString() is probably all
      you need to do. */
 
-  public String toString() { return Regex2AutoTreeConstants.jjtNodeName[id]; }
+  public String toString() {
+	  String ret = Regex2AutoTreeConstants.jjtNodeName[id];
+	  if(this.jjtGetValue()!=null)
+		  ret+=" "+this.jjtGetValue().toString();
+	  return ret;
+  }
   public String toString(String prefix) { return prefix + toString(); }
 
   /* Override this method if you want to customize how the node dumps
@@ -78,10 +83,7 @@ class SimpleNode implements Node {
     default:
     	System.out.println(toString(prefix));break;
     }*/
-	System.out.print(toString(prefix));
-	if(this.jjtGetValue()!=null)
-		System.out.print(" "+this.jjtGetValue().toString());
-	System.out.println();
+	System.out.println(toString(prefix));
 	
     if (children != null) {
       for (int i = 0; i < children.length; ++i) {
