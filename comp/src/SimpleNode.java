@@ -57,6 +57,7 @@ public class SimpleNode implements Node {
 	public Object jjtGetValue() {
 		return value;
 	}
+
 	/*
 	 * You can override these two methods in subclasses of SimpleNode to
 	 * customize the way the node appears when the tree is dumped. If your
@@ -65,7 +66,10 @@ public class SimpleNode implements Node {
 	 */
 
 	public String toString() {
-		return Regex2AutoTreeConstants.jjtNodeName[id];
+		String ret = Regex2AutoTreeConstants.jjtNodeName[id];
+		if (this.jjtGetValue() != null)
+			ret += " " + this.jjtGetValue().toString();
+		return ret;
 	}
 
 	public String toString(String prefix) {
@@ -78,13 +82,15 @@ public class SimpleNode implements Node {
 	 */
 
 	public String generateAutomata(String generated, int stateCount) {
-		switch(Regex2AutoTreeConstants.jjtNodeName[id])
-		{
+		switch (Regex2AutoTreeConstants.jjtNodeName[id]) {
 		case "Multiplicity":
-			generated+="loop "+((SimpleNode) parent.jjtGetChild(parent.jjtGetNumChildren()-2)).jjtGetValue().toString()+"\n";
+			generated += "loop "
+					+ ((SimpleNode) parent.jjtGetChild(parent
+							.jjtGetNumChildren() - 2)).jjtGetValue().toString()
+					+ "\n";
 			stateCount++;
 		case "Char":
-			generated+=jjtGetValue().toString()+"\n";
+			generated += jjtGetValue().toString() + "\n";
 			stateCount++;
 		}
 		if (children != null) {
@@ -96,34 +102,32 @@ public class SimpleNode implements Node {
 		return generated;
 	}
 
-  public void dump(String prefix) {   
-    /*if(this.val!=null)
-    	System.out.println(prefix+this.val);
-    else*/
-    /*switch(this.id)
-    {
-    case Regex2AutoTreeConstants.JJTZEROMORE:
-    	System.out.println(prefix+jjtGetValue());break;
-    case Regex2AutoTreeConstants.JJTONEMORE:
-    	System.out.println(prefix+"+");break;
-    case Regex2AutoTreeConstants.JJTZEROONE:
-    	System.out.println(prefix+"?");break;
-    case Regex2AutoTreeConstants.JJTCHARVAL:
-    	System.out.println(prefix+val);break;
-    default:
-    	System.out.println(toString(prefix));break;
-    }*/
-	System.out.println(toString(prefix));
-	
-    if (children != null) {
-      for (int i = 0; i < children.length; ++i) {
-        SimpleNode n = (SimpleNode)children[i];
-        if (n != null) {
-          n.dump(prefix + " ");
-        }
-      }
-    }
-  }
+	public void dump(String prefix) {
+		/*
+		 * if(this.val!=null) System.out.println(prefix+this.val); else
+		 */
+		/*
+		 * switch(this.id) { case Regex2AutoTreeConstants.JJTZEROMORE:
+		 * System.out.println(prefix+jjtGetValue());break; case
+		 * Regex2AutoTreeConstants.JJTONEMORE:
+		 * System.out.println(prefix+"+");break; case
+		 * Regex2AutoTreeConstants.JJTZEROONE:
+		 * System.out.println(prefix+"?");break; case
+		 * Regex2AutoTreeConstants.JJTCHARVAL:
+		 * System.out.println(prefix+val);break; default:
+		 * System.out.println(toString(prefix));break; }
+		 */
+		System.out.println(toString(prefix));
+
+		if (children != null) {
+			for (int i = 0; i < children.length; ++i) {
+				SimpleNode n = (SimpleNode) children[i];
+				if (n != null) {
+					n.dump(prefix + " ");
+				}
+			}
+		}
+	}
 }
 
 /*
