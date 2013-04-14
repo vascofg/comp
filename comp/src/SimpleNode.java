@@ -89,9 +89,11 @@ public class SimpleNode implements Node {
 							.jjtGetNumChildren() - 2)).jjtGetValue().toString()
 					+ "\n";
 			stateCount++;
+			break;
 		case "Char":
 			generated += jjtGetValue().toString() + "\n";
 			stateCount++;
+			break;
 		}
 		if (children != null) {
 			for (int i = 0; i < children.length; i++) {
