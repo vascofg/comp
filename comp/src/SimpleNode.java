@@ -84,14 +84,32 @@ public class SimpleNode implements Node {
 	public String generateAutomata(String generated, int stateCount) {
 		switch (Regex2AutoTreeConstants.jjtNodeName[id]) {
 		case "Multiplicity":
-			generated += "loop "
-					+ ((SimpleNode) parent.jjtGetChild(parent
-							.jjtGetNumChildren() - 2)).jjtGetValue().toString()
-					+ "\n";
+			switch(this.jjtGetValue().toString())
+			{
+			case "*":
+				break;
+			case "+":
+				break;
+			case "?":
+				break;
+			}
+			generated += "loop ";
+			SimpleNode prevSibling = ((SimpleNode)parent.jjtGetChild(parent.jjtGetNumChildren() - 2));
+			try{
+				generated += prevSibling.jjtGetValue().toString();
+			}
+			catch(NullPointerException e){
+				
+				for(int i = 0; i<prevSibling.jjtGetNumChildren();i++)
+					generated += ((SimpleNode) prevSibling.jjtGetChild(i)).jjtGetValue().toString();
+			}
+			finally{
+				generated += "\n";
+			}
 			stateCount++;
 			break;
 		case "Char":
-			generated += jjtGetValue().toString() + "\n";
+			generated += jjtGetValue() + "\n";
 			stateCount++;
 			break;
 		}
