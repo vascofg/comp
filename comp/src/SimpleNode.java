@@ -134,13 +134,12 @@ public class SimpleNode implements Node {
 			}
 			generated += " goto S";
 			SimpleNode prevSibling = (SimpleNode) jjtGetPreviousSibling();
-			int state = prevSibling.getState();
-			if (state > -1)
-				generated += state;
+			SimpleNode stateNode;
+			if (prevSibling.getState()>-1) //parenthesis
+				stateNode = prevSibling;
 			else
-				generated += ((SimpleNode) prevSibling.jjtGetFirstStateNode())
-						.getState();
-			generated += "\n";
+				stateNode = (SimpleNode)prevSibling.jjtGetFirstStateNode();
+			generated += stateNode.getState() + " with " + stateNode.jjtGetValue() + "\n";
 			break;
 		case "Char":
 			this.state = stateCount.getAndIncrement();
