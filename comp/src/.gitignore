@@ -1,8 +1,6 @@
 *.java
 /Parser.jj
-!Node.java
-!ParseException.java
-!SimpleCharStream.java
 !SimpleNode.java
-!Token.java
-!TokenMgrError.java
+!Automaton.java
+!Connection.java
+!State.java

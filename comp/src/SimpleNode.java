@@ -9,11 +9,11 @@ public class SimpleNode implements Node {
 	protected int id;
 	protected Object value;
 	protected Regex2Auto parser;
-	protected int state;
+	protected int stateID;
 
 	public SimpleNode(int i) {
 		id = i;
-		state = -1;
+		stateID = -1;
 	}
 
 	public SimpleNode(Regex2Auto p, int i) {
@@ -69,7 +69,7 @@ public class SimpleNode implements Node {
 	public Node jjtGetFirstStateNode() { //Gets the first node inside a parenthesis which is a valid state
 		try{
 		SimpleNode child = (SimpleNode)this.jjtGetChild(0);
-		if(child.getState()>-1)
+		if(child.getStateID()>-1)
 			return child;
 		else
 			return child.jjtGetFirstStateNode();
@@ -92,8 +92,8 @@ public class SimpleNode implements Node {
 		return value;
 	}
 
-	public int getState() {
-		return state;
+	public int getStateID() {
+		return stateID;
 	}
 
 	/*
@@ -114,45 +114,52 @@ public class SimpleNode implements Node {
 		return prefix + toString();
 	}
 
-	public String generateAutomata(AtomicInteger stateCount) {
-		String generated = new String();
+	public void generateAutomaton(Automaton a) {
+		int nextStateID = a.getNumStates();
+		State sourceState, destinationState;
+		char transitionChar;
 		switch (Regex2AutoTreeConstants.jjtNodeName[id]) {
 		case "Start":
-			generated += "S" + stateCount.getAndIncrement() + ": Start\n";
+			a.addState(new State(nextStateID)); //Start state
 			break;
 		case "Multiplicity":
 			switch (this.jjtGetValue().toString()) {
 			case "*":
-				generated += "0+";
 				break;
 			case "+":
-				generated += "1+";
 				break;
 			case "?":
-				generated += "0|1";
 				break;
 			}
-			generated += " goto S";
 			SimpleNode prevSibling = (SimpleNode) jjtGetPreviousSibling();
 			SimpleNode stateNode;
-			if (prevSibling.getState()>-1) //parenthesis
+			if (prevSibling.getStateID()>-1) //parenthesis
 				stateNode = prevSibling;
 			else
-				stateNode = (SimpleNode)prevSibling.jjtGetFirstStateNode();
-			generated += stateNode.getState() + " with " + stateNode.jjtGetValue() + "\n";
+				stateNode = (SimpleNode)prevSibling.jjtGetFirstStateNode(); //first node which is not a parenthesis
+			sourceState = a.getState(nextStateID-1); //source state (last inserted one)
+			destinationState = a.getState(stateNode.getStateID()); //destination state
+			transitionChar = stateNode.jjtGetValue().toString().charAt(0); //get transition char
+			sourceState.addConnection(destinationState, transitionChar);
 			break;
 		case "Char":
-			this.state = stateCount.getAndIncrement();
-			generated += "S" + this.state + ": " + jjtGetValue() + "\n";
+			this.stateID = nextStateID; //add stateID to node
+			State newState = new State(this.stateID);
+			a.addState(newState);
+			sourceState = a.getState(nextStateID-1); //source state (previously inserted one)
+			destinationState = newState; //destination state (the one inserted just now)
+			transitionChar = this.jjtGetValue().toString().charAt(0); //get transition char
+			sourceState.addConnection(destinationState, transitionChar);
+			sourceState.setFinalState(false); //previous state is not final
+			newState.setFinalState(true); //new state is final
 			break;
 		}
 		if (children != null) {
 			for (int i = 0; i < children.length; i++) {
 				SimpleNode n = (SimpleNode) children[i];
-				generated += n.generateAutomata(stateCount);
+				n.generateAutomaton(a);
 			}
 		}
-		return generated;
 	}
 
 	/*
