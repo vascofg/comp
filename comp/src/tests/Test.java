@@ -86,7 +86,57 @@ public class Test {
 	    a.addState(s2);
 	    a.addState(s3);
 	    a.addState(s4);
-		compareGeneratedAutomaton("(a*(bc)d+)", a);
+	    compareGeneratedAutomaton("(a*(bc)d+)", a);
+	}
+	
+	@org.junit.Test
+	public void test5() { //a*b*c*
+		Automaton a = new Automaton();
+		State s0 = new State(0);
+		State s1 = new State(1);
+		State s2 = new State(2);
+		State s3 = new State(3);
+		s0.addConnection(s1, 'a');
+		s0.addConnection(s2, 'b');
+		s0.addConnection(s3, 'c');
+		s1.addConnection(s1, 'a');
+		s1.addConnection(s2, 'b');
+		s1.addConnection(s3, 'c');
+		s2.addConnection(s2, 'b');
+		s2.addConnection(s3, 'c');
+		s3.addConnection(s3, 'c');
+		s0.setFinalState(true);
+		s1.setFinalState(true);
+		s2.setFinalState(true);
+		s3.setFinalState(true);
+	    a.addState(s0);
+	    a.addState(s1);
+	    a.addState(s2);
+	    a.addState(s3);
+		compareGeneratedAutomaton("a*b*c*", a);
+	}
+	
+	@org.junit.Test
+	public void test6() { //a*b*c
+		Automaton a = new Automaton();
+		State s0 = new State(0);
+		State s1 = new State(1);
+		State s2 = new State(2);
+		State s3 = new State(3);
+		s0.addConnection(s1, 'a');
+		s0.addConnection(s2, 'b');
+		s0.addConnection(s3, 'c');
+		s1.addConnection(s1, 'a');
+		s1.addConnection(s2, 'b');
+		s1.addConnection(s3, 'c');
+		s2.addConnection(s2, 'b');
+		s2.addConnection(s3, 'c');
+		s3.setFinalState(true);
+	    a.addState(s0);
+	    a.addState(s1);
+	    a.addState(s2);
+	    a.addState(s3);
+		compareGeneratedAutomaton("a*b*c", a);
 	}
 	
 	public void compareGeneratedAutomaton(String regex, Automaton testAutomaton) {

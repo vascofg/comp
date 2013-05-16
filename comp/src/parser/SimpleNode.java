@@ -69,6 +69,22 @@ public class SimpleNode implements Node {
 			return parent.jjtGetChild(pos - 1);
 	}
 	
+	public Node jjtGetNextSibling() {
+		int pos = jjtGetPositionInParent();
+		if (pos == -1)
+			return null;
+		else
+		{
+			try{
+				return parent.jjtGetChild(pos + 1);
+			}
+			catch(ArrayIndexOutOfBoundsException | NullPointerException e)
+			{
+				return null;
+			}
+		}
+	}
+	
 	public Node jjtGetFirstStateNode() { //Gets the first node inside a parenthesis which is a valid state
 		try{
 		if(this.getStateID()>-1)
@@ -115,7 +131,7 @@ public class SimpleNode implements Node {
 	public String toString(String prefix) {
 		return prefix + toString();
 	}
-
+	
 	public void generateAutomaton(Automaton a) {
 		int nextStateID = a.getNumStates();
 		State sourceState, destinationState;
@@ -132,6 +148,8 @@ public class SimpleNode implements Node {
 			transitionChar = stateNode.jjtGetValue().toString().charAt(0); //get transition char
 			sourceState.addConnection(destinationState, transitionChar);
 			sourceState.setFlag(true);
+			if(this.jjtGetValue().toString().charAt(0)=='*') //when multiplicity * is found, add bypassing connections to previous States
+				a.addBypassConnections(destinationState, transitionChar);
 			break;
 		case "Char":
 			this.stateID = nextStateID; //add stateID to node
@@ -143,10 +161,12 @@ public class SimpleNode implements Node {
 			sourceState.addConnection(destinationState, transitionChar);
 			sourceState.setFinalState(false); //previous state is not final
 			newState.setFinalState(true); //new state is final
-			if(sourceState.getFlag())//if previous node has multiplicity * add a connection from the node before it to this node
+			a.clearPreviousFinalStates(destinationState);
+			SimpleNode nextNode = ((SimpleNode)this.jjtGetNextSibling());
+			if(nextNode==null || Regex2AutoTreeConstants.jjtNodeName[nextNode.id]!= "Multiplicity" || nextNode.jjtGetValue().toString().charAt(0) != '*') //if this char has no multiplicity, add the bypass but clear the final states
 			{
-				a.getState(this.stateID-2).addConnection(newState, transitionChar);
-				sourceState.setFlag(false);
+				a.addBypassConnections(destinationState, transitionChar);
+				a.clearPreviousFinalStates(destinationState);
 			}
 			break;
 		}
