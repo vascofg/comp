@@ -68,11 +68,10 @@ public class SimpleNode implements Node {
 	
 	public Node jjtGetFirstStateNode() { //Gets the first node inside a parenthesis which is a valid state
 		try{
-		SimpleNode child = (SimpleNode)this.jjtGetChild(0);
-		if(child.getStateID()>-1)
-			return child;
+		if(this.getStateID()>-1)
+			return this;
 		else
-			return child.jjtGetFirstStateNode();
+			return ((SimpleNode)this.jjtGetChild(0)).jjtGetFirstStateNode();
 		}
 		catch(NullPointerException e){
 			System.out.println("ESTOUROU");
@@ -132,13 +131,9 @@ public class SimpleNode implements Node {
 				break;
 			}
 			SimpleNode prevSibling = (SimpleNode) jjtGetPreviousSibling();
-			SimpleNode stateNode;
-			if (prevSibling.getStateID()>-1) //parenthesis
-				stateNode = prevSibling;
-			else
-				stateNode = (SimpleNode)prevSibling.jjtGetFirstStateNode(); //first node which is not a parenthesis
-			sourceState = a.getState(nextStateID-1); //source state (last inserted one)
-			destinationState = a.getState(stateNode.getStateID()); //destination state
+			SimpleNode stateNode = (SimpleNode)prevSibling.jjtGetFirstStateNode(); //first node which is not a parenthesis
+			sourceState = a.getState(stateNode.getStateID()); //source state
+			destinationState = sourceState; //destination state (same as source node)
 			transitionChar = stateNode.jjtGetValue().toString().charAt(0); //get transition char
 			sourceState.addConnection(destinationState, transitionChar);
 			break;
