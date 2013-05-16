@@ -1,7 +1,7 @@
 /**
  * JavaCC template file created by SF JavaCC plugin 1.5.17+ wizard for JavaCC 1.5.0+
- */options{  JDK_VERSION = "1.5";  static = true;}PARSER_BEGIN(Regex2Auto)
-import java.util.concurrent.atomic.AtomicInteger;public class Regex2Auto{  public static void main(String args [])  {    Regex2Auto parser = new Regex2Auto(System.in);    System.out.println("Write a string...");    try    {      System.out.print("> ");      //parser.run();
+ */options{  JDK_VERSION = "1.5";  static = false;}PARSER_BEGIN(Regex2Auto)
+package parser;public class Regex2Auto{  public static void main(String args [])  {    Regex2Auto parser = new Regex2Auto(System.in);    System.out.println("Write a string...");    try    {      System.out.print("> ");      //parser.run();
       SimpleNode n = parser.Start();      n.dump("");
       System.out.println("--------------------------------------------");
       Automaton a = new Automaton();
@@ -15,4 +15,4 @@ import java.util.concurrent.atomic.AtomicInteger;public class Regex2Auto{  pu
 {}
 {
 	(< OPENPARENTHESIS >((Expression())+< CLOSEPARENTHESIS >)(Multiplicity())?)
-}*/SimpleNode Start() :{}{  EXP() < LF >  {    return jjtThis;  }}
+}*/SimpleNode Start() :{}{  EXP() (< LF > | < EOF >)  {    return jjtThis;  }}
