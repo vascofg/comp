@@ -30,7 +30,7 @@ public class Automaton {
 		for(int i=0;i<states.size();i++)
 		{
 			State currentState = states.get(i);
-			System.out.println("S" + currentState.getID() + (currentState.isFinal() ? " final":"") + (currentState.getFlag() ? " true":" false")+ ":");
+			System.out.println("S" + currentState.getID() + (currentState.isFinal() ? " final":"") + ":");
 			for(int j=0;j<states.get(i).getNumConnections();j++)
 			{ 
 				Connection currentConnection = currentState.getConnection(j);
