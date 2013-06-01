@@ -97,6 +97,24 @@ public class SimpleNode implements Node {
 			return null;
 		}
 	}
+	
+	public Node jjtGetNextStateNode() { //Gets the next node which is a valid state
+		SimpleNode nextSibling = (SimpleNode) this.jjtGetNextSibling();
+		SimpleNode nextNode;
+		if(nextSibling!=null)
+			nextNode=nextSibling;
+		else try{
+			nextNode = (SimpleNode) this.jjtGetChild(0);
+		}
+		catch(NullPointerException e)
+		{
+			return null;
+		}
+		if(nextNode.getStateID()>-1)
+			return nextNode;
+		else
+			return nextNode.jjtGetNextStateNode();
+	}
 
 	public int jjtGetNumChildren() {
 		return (children == null) ? 0 : children.length;
@@ -112,6 +130,21 @@ public class SimpleNode implements Node {
 
 	public int getStateID() {
 		return stateID;
+	}
+	
+	public Boolean jjtIsNextNodeStar() {
+		SimpleNode nextNode = ((SimpleNode)this.jjtGetNextSibling());
+		return(nextNode!=null && Regex2AutoTreeConstants.jjtNodeName[nextNode.id]== "Multiplicity" && nextNode.jjtGetValue().toString().charAt(0) == '*');
+	}
+	
+	public Node jjtGetNextNonStarStateNode() {
+		SimpleNode nextNode;
+		do{
+			nextNode=((SimpleNode) jjtGetNextStateNode());
+			if(!nextNode.jjtIsNextNodeStar())
+				return nextNode;
+		} while(nextNode != this);
+		return null;
 	}
 
 	/*
@@ -142,12 +175,21 @@ public class SimpleNode implements Node {
 			break;
 		case "Multiplicity":
 			SimpleNode prevSibling = (SimpleNode) jjtGetPreviousSibling();
-			SimpleNode stateNode = (SimpleNode)prevSibling.jjtGetFirstStateNode(); //first node which is not a parenthesis
+			SimpleNode stateNode = (SimpleNode)prevSibling.jjtGetFirstStateNode();
+			transitionChar = stateNode.jjtGetValue().toString().charAt(0); //get transition char
 			sourceState = a.getState(nextStateID-1); //source state (last inserted one)
 			destinationState = a.getState(stateNode.getStateID()); //destination state
-			transitionChar = stateNode.jjtGetValue().toString().charAt(0); //get transition char
 			sourceState.addConnection(destinationState, transitionChar);
 			sourceState.setFlag(true);
+			SimpleNode nextNode = (SimpleNode) stateNode.jjtGetNextStateNode();
+			while(nextNode!=null && nextNode.getStateID()!=sourceState.getID())
+			{
+				sourceState.addConnection(a.getState(nextNode.getStateID()), nextNode.jjtGetValue().toString().charAt(0));
+				if(!nextNode.jjtIsNextNodeStar())
+					break;
+				else
+					nextNode = (SimpleNode) nextNode.jjtGetNextStateNode();
+			}
 			if(this.jjtGetValue().toString().charAt(0)=='*') //when multiplicity * is found, add bypassing connections to previous States
 				a.addBypassConnections(destinationState, transitionChar);
 			break;
@@ -162,8 +204,7 @@ public class SimpleNode implements Node {
 			sourceState.setFinalState(false); //previous state is not final
 			newState.setFinalState(true); //new state is final
 			a.clearPreviousFinalStates(destinationState);
-			SimpleNode nextNode = ((SimpleNode)this.jjtGetNextSibling());
-			if(nextNode==null || Regex2AutoTreeConstants.jjtNodeName[nextNode.id]!= "Multiplicity" || nextNode.jjtGetValue().toString().charAt(0) != '*') //if this char has no multiplicity, add the bypass but clear the final states
+			if(!this.jjtIsNextNodeStar()) //if this char has no multiplicity, add the bypass but clear the final states
 			{
 				a.addBypassConnections(destinationState, transitionChar);
 				a.clearPreviousFinalStates(destinationState);
