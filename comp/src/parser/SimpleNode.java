@@ -180,10 +180,10 @@ public class SimpleNode implements Node {
 			sourceState = a.getState(nextStateID-1); //source state (last inserted one)
 			destinationState = a.getState(stateNode.getStateID()); //destination state
 			sourceState.addConnection(destinationState, transitionChar);
-			sourceState.setFlag(true);
 			SimpleNode nextNode = (SimpleNode) stateNode.jjtGetNextStateNode();
 			if(this.jjtGetValue().toString().charAt(0)=='*') //when multiplicity * is found, add bypassing connections to previous States
 			{
+				sourceState.setFlag(true);
 				a.addBypassConnections(destinationState, transitionChar);
 				while(nextNode!=null && nextNode.getStateID()!=sourceState.getID())
 				{
@@ -203,7 +203,6 @@ public class SimpleNode implements Node {
 			destinationState = newState; //destination state (the one inserted just now)
 			transitionChar = this.jjtGetValue().toString().charAt(0); //get transition char
 			sourceState.addConnection(destinationState, transitionChar);
-			sourceState.setFinalState(false); //previous state is not final
 			newState.setFinalState(true); //new state is final
 			a.clearPreviousFinalStates(destinationState);
 			if(!this.jjtIsNextNodeStar()) //if this char has no multiplicity, add the bypass but clear the final states

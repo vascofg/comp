@@ -11,9 +11,9 @@ import parser.State;
 public abstract class Implementation {
 	static Automaton a;
 
-	static void initialize(Scanner input) {
+	static void initialize(String filename) {
 		try {
-			a = Automaton.load(input);
+			a = Automaton.load(filename);
 			System.out.println("loaded");
 		} catch (IOException e) {
 			System.out.println("Failed to load file. Generate again.");
@@ -50,7 +50,9 @@ public abstract class Implementation {
 
 	public static void main(String args[]) {
 		Scanner input = new Scanner(System.in);
-		initialize(input);
+		System.out.print("File name: ");
+		String filename = input.nextLine();
+		initialize(filename);
 
 		int opt;
 		do {

@@ -6,6 +6,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.io.PrintWriter;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Scanner;
@@ -104,11 +105,8 @@ public class Automaton implements Serializable {
 			this.getState(i).setFinalState(false);
 	}
 
-	public static void save(Scanner input, Automaton a) {
+	public static void save(String filename, Automaton a) {
 		try {
-			System.out.print("File name: ");
-			String filename = input.nextLine();
-			input.close();
 			File file = new File(filename);
 			file.createNewFile();
 			FileOutputStream fileOut = new FileOutputStream(file);
@@ -121,9 +119,8 @@ public class Automaton implements Serializable {
 		}
 	}
 
-	public static Automaton load(Scanner input) throws IOException, ClassNotFoundException {
-		System.out.print("File name: ");
-		String filename = input.nextLine();
+	public static Automaton load(String filename) throws IOException,
+			ClassNotFoundException {
 		File file = new File(filename);
 		FileInputStream fileIn = new FileInputStream(file);
 		ObjectInputStream in = new ObjectInputStream(fileIn);
@@ -134,7 +131,36 @@ public class Automaton implements Serializable {
 		return a;
 	}
 
-	public static void implement(Automaton a) {
-
+	public void generateDOT() {
+		try {
+			File file = new File("tmp.dot");
+			PrintWriter writer = new PrintWriter(file, "UTF-8");
+			writer.write("digraph finite_state_machine {rankdir=LR;node [shape = doublecircle];");
+			State currentState;
+			Connection currentConnection;
+			for (int i = 0; i < states.size(); i++) {
+				currentState = states.get(i);
+				if(currentState.isFinal())
+					writer.write("S"+currentState.getID()+" ");
+			}
+			writer.write(";node [shape = circle];");
+			for (int i = 0; i < states.size(); i++) {
+				currentState = states.get(i);
+				for (int j = 0; j < states.get(i).getNumConnections(); j++) {
+					currentConnection = currentState
+							.getConnection(j);
+					writer.write("S"+currentState.getID()+"->S"+currentConnection.getDestination().getID()+"[label=\""+currentConnection.getTransitionChar()+"\"];");
+				}
+			}
+			writer.write("}");
+			writer.close();
+			Runtime r = Runtime.getRuntime();
+			Process p = r.exec("dot -Tsvg tmp.dot -o automaton.svg");
+			p.waitFor();
+			file.delete();		
+			
+		} catch (IOException | InterruptedException e) {
+			e.printStackTrace();
+		}
 	}
 }
