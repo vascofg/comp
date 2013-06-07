@@ -25,7 +25,9 @@ public class Automaton implements Serializable {
 	{
 		return this.states.size();
 	}
-	
+	/**
+	 * Writes the automata
+	 */
 	public void dump()
 	{
 		for(int i=0;i<states.size();i++)
