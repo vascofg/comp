@@ -1,8 +1,9 @@
 package parser;
+import java.io.Serializable;
 import java.util.ArrayList;
 
 
-public class Automaton {
+public class Automaton implements Serializable {
 	private ArrayList<State> states;
 	
 	public Automaton()
