@@ -131,11 +131,11 @@ public class Automaton implements Serializable {
 		return a;
 	}
 
-	public void generateDOT() {
+	public void generateDOT(String filename) {
 		try {
-			File file = new File("tmp.dot");
+			File file = new File(filename+".dot");
 			PrintWriter writer = new PrintWriter(file, "UTF-8");
-			writer.write("digraph finite_state_machine {rankdir=LR;node [shape = doublecircle];");
+			writer.write("digraph finite_state_machine {\n\trankdir=LR;\n\tnode [shape = doublecircle];");
 			State currentState;
 			Connection currentConnection;
 			for (int i = 0; i < states.size(); i++) {
@@ -143,23 +143,26 @@ public class Automaton implements Serializable {
 				if(currentState.isFinal())
 					writer.write("S"+currentState.getID()+" ");
 			}
-			writer.write(";node [shape = circle];");
+			writer.write(";\n\tnode [shape = circle];");
 			for (int i = 0; i < states.size(); i++) {
 				currentState = states.get(i);
 				for (int j = 0; j < states.get(i).getNumConnections(); j++) {
 					currentConnection = currentState
 							.getConnection(j);
-					writer.write("S"+currentState.getID()+"->S"+currentConnection.getDestination().getID()+"[label=\""+currentConnection.getTransitionChar()+"\"];");
+					writer.write("\n\tS"+currentState.getID()+"->S"+currentConnection.getDestination().getID()+"[label=\""+currentConnection.getTransitionChar()+"\"];");
 				}
 			}
-			writer.write("}");
+			writer.write("\n}");
 			writer.close();
 			Runtime r = Runtime.getRuntime();
-			Process p = r.exec("dot -Tsvg tmp.dot -o automaton.svg");
+			Process p = r.exec("dot -Tsvg "+filename+".dot -o "+filename+".svg");
 			p.waitFor();
-			file.delete();		
 			
-		} catch (IOException | InterruptedException e) {
+		} catch (IOException e) {
+			System.out.println("Graphviz not installed");
+		}
+		catch (InterruptedException e)
+		{
 			e.printStackTrace();
 		}
 	}
