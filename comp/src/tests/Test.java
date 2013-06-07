@@ -140,42 +140,6 @@ public class Test {
 		compareGeneratedAutomaton("a*b*c", a);
 	}
 	
-	@org.junit.Test
-	public void test7() { //((a*b*)dc*)*
-		//need to make connection from * state to all others with *
-		Automaton a = new Automaton();
-		State s0 = new State(0);
-		State s1 = new State(1);
-		State s2 = new State(2);
-		State s3 = new State(3);
-		State s4 = new State(4);
-		s0.addConnection(s1, 'a');
-		s0.addConnection(s2, 'b');
-		s0.addConnection(s3, 'd');
-		s1.addConnection(s1, 'a');
-		s1.addConnection(s2, 'b');
-		s1.addConnection(s3, 'd');
-		s2.addConnection(s2, 'b');
-		s2.addConnection(s3, 'd');
-		s3.addConnection(s1, 'a');
-		s3.addConnection(s2, 'b');
-		s3.addConnection(s3, 'd');
-		s3.addConnection(s4, 'c');
-		s4.addConnection(s1, 'a');
-		s4.addConnection(s2, 'b');
-		s4.addConnection(s3, 'd');
-		s4.addConnection(s4, 'c');
-		s0.setFinalState(true);
-		s3.setFinalState(true);
-		s4.setFinalState(true);
-	    a.addState(s0);
-	    a.addState(s1);
-	    a.addState(s2);
-	    a.addState(s3);
-	    a.addState(s4);
-		compareGeneratedAutomaton("((a*b*)dc*)*", a);
-	}
-	
 	public void compareGeneratedAutomaton(String regex, Automaton testAutomaton) {
 	    Regex2Auto parser = new Regex2Auto(new ByteArrayInputStream(regex.getBytes(StandardCharsets.UTF_8)));
 	    Automaton generatedAutomaton = new Automaton();
