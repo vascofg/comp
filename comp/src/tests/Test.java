@@ -1,15 +1,16 @@
 package tests;
 import static org.junit.Assert.*;
+import parser.Automaton;
 import parser.ParseException;
 import parser.Regex2Auto;
+import parser.State;
 import parser.TokenMgrError;
+
 
 import java.io.ByteArrayInputStream;
 import java.nio.charset.StandardCharsets;
 
-import parser.Automaton;
 import parser.SimpleNode;
-import parser.State;
 
 
 public class Test {
