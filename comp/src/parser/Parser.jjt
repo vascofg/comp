@@ -1,17 +1,23 @@
 /**
  * JavaCC template file created by SF JavaCC plugin 1.5.17+ wizard for JavaCC 1.5.0+
  */options{  JDK_VERSION = "1.5";  static = false;}PARSER_BEGIN(Regex2Auto)
-package parser;public class Regex2Auto{  public static void main(String args [])  {    Regex2Auto parser = new Regex2Auto(System.in);    System.out.println("Write a string...");    try    {      System.out.print("> ");      //parser.run();
-      SimpleNode n = parser.Start();      n.dump("");
-      System.out.println("--------------------------------------------");
-      Automaton a = new Automaton();
-      n.generateAutomaton(a);
-      a.dump();
-      //System.out.println(n.generateAutomata("public class Automata\n{\npublic static void main()\n{\ns0();\n}\n",0));      //System.out.println("Accepted");
-    }    catch (ParseException e)    {      System.out.println(e.getMessage());    }    catch (TokenMgrError e)    {      System.out.println("Rejected");    }  }}PARSER_END(Regex2Auto)SKIP :{  "\t "| "\r"}TOKEN :{  < CHAR : [ "A"-"Z", "a"-"z", "0"-"9", " " ] >  //| <SYMBOL : ""> | 
+package parser;
+import java.util.Scanner;public class Regex2Auto{  public static void main(String args [])  {	Regex2Auto parser;
+	
+    while(true)
+    {      	parser = new Regex2Auto(System.in);		System.out.print("Regex: ");		try		{
+		  SimpleNode n = parser.Start();
+		  Automaton a = new Automaton();
+		  n.generateAutomaton(a);
+		  Scanner input = new Scanner(System.in);
+		  Automaton.save(input, a);
+		  input.close();
+		  break;
+		}		catch (ParseException e)		{		  System.out.println(e.getMessage());		}		catch (TokenMgrError e)		{		  System.out.println("Rejected");		}
+  }  }}PARSER_END(Regex2Auto)SKIP :{  "\t "| "\r"}TOKEN :{  < CHAR : [ "A"-"Z", "a"-"z", "0"-"9", " " ] >  //| <SYMBOL : ""> | 
 | < WORD : "\\w" >| < NONWORD : "\\W" >| < WHITESPACE : "\\s" >| < NONWHITESPACE : "\\S" >| < DIGIT : "\\d" >| < NONDIGIT : "\\D" >| < ANY : "." >| < ZEROMORE : "*" >| < ONEMORE : "+" >| < ZEROONE : "?" >| < OPENPARENTHESIS : "(" >| < CLOSEPARENTHESIS : ")" >| < MATCH : "{" < INTEGER > "," < INTEGER > "}" >| < MATCHNORMORE : "{" < INTEGER > "," "}" >| < MATCHN : "{" < INTEGER > "}" >| < BACKSLASH : "\\" >| < POSLOOKAHEAD : "?=" >| < NEGLOOKAHEAD : "?!" >| < POSLOOKBEHIND : "?<=" >| < NEGLOOKBEHIND : "?<!" >| < START : "^" >| < END : "$" >| < #INTEGER : [ "1"-"9" ] ([ "0"-"9" ])* >| < LF : "\n" >}void EXP() :{}{  (Char())+ [ Multiplicity() ] [ EXP() ]| < OPENPARENTHESIS > EXP() < CLOSEPARENTHESIS > [ Multiplicity() ] [ EXP() ] //Nao aceita ()
   //Deve aceitar \ seguido de qualquer simbolo que tenha significado para regex (token)	
-}void Char() :{  Token t;}{  (    t = < CHAR >  | t = < ANY >  )  {    jjtThis.jjtSetValue(t.image);  }}void Multiplicity() : //Multiplicidade aplicada ao n� anterior{  Token t;}{  (    t = < ZEROMORE >  | t = < ONEMORE >  | t = < ZEROONE >  )  {    jjtThis.jjtSetValue(t.image);  }}/*void ParExpression() :
+}void Char() :{  Token t;}{  (    t = < CHAR >  | t = < ANY >  )  {    jjtThis.jjtSetValue(t.image);  }}void Multiplicity() : //Multiplicidade aplicada ao n� anterior{  Token t;}{  (    t = < ZEROMORE >  | t = < ONEMORE >  )  {    jjtThis.jjtSetValue(t.image);  }}/*void ParExpression() :
 {}
 {
 	(< OPENPARENTHESIS >((Expression())+< CLOSEPARENTHESIS >)(Multiplicity())?)

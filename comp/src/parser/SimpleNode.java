@@ -182,16 +182,18 @@ public class SimpleNode implements Node {
 			sourceState.addConnection(destinationState, transitionChar);
 			sourceState.setFlag(true);
 			SimpleNode nextNode = (SimpleNode) stateNode.jjtGetNextStateNode();
-			while(nextNode!=null && nextNode.getStateID()!=sourceState.getID())
-			{
-				sourceState.addConnection(a.getState(nextNode.getStateID()), nextNode.jjtGetValue().toString().charAt(0));
-				if(!nextNode.jjtIsNextNodeStar())
-					break;
-				else
-					nextNode = (SimpleNode) nextNode.jjtGetNextStateNode();
-			}
 			if(this.jjtGetValue().toString().charAt(0)=='*') //when multiplicity * is found, add bypassing connections to previous States
+			{
 				a.addBypassConnections(destinationState, transitionChar);
+				while(nextNode!=null && nextNode.getStateID()!=sourceState.getID())
+				{
+					sourceState.addConnection(a.getState(nextNode.getStateID()), nextNode.jjtGetValue().toString().charAt(0));
+					if(!nextNode.jjtIsNextNodeStar())
+						break;
+					else
+						nextNode = (SimpleNode) nextNode.jjtGetNextStateNode();
+				}
+			}
 			break;
 		case "Char":
 			this.stateID = nextStateID; //add stateID to node

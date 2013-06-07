@@ -1,8 +1,9 @@
 package parser;
+import java.io.Serializable;
 import java.util.ArrayList;
 
 
-public class State {
+public class State implements Serializable{
 	private ArrayList<Connection> connections;
 	private int id;
 	private Boolean finalState;

@@ -1,6 +1,8 @@
 package parser;
 
-public class Connection {
+import java.io.Serializable;
+
+public class Connection implements Serializable {
 	private State destination;
 	private char transitionChar;
 	
